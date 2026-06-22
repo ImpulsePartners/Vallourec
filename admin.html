@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Inno Talk #4 — Admin (présentateur)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#15457f; --ink:#16335f; --blue:#2f6fc4; --blue-soft:#e7eefb;
+    --teal:#1f7a5e; --amber:#9a6712; --red:#9a3a22;
+    --bg:#eef1f6; --card:#fff; --muted:#5b6478; --line:#e3e8f1;
+    --radius:16px; --shadow:0 8px 26px rgba(21,69,127,.07);
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0}
+  body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--ink);min-height:100dvh}
+  header{background:var(--navy);color:#fff;padding:20px 30px}
+  header h1{font-family:'Space Grotesk';font-weight:700;font-size:21px;margin:0;letter-spacing:.2px}
+  header p{margin:4px 0 0;font-size:13px;color:#bcd0ec}
+  .wrap{max-width:880px;margin:0 auto;padding:26px 20px 60px;display:flex;flex-direction:column;gap:22px}
+  .card{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);padding:24px 26px}
+  .card h2{font-family:'Space Grotesk';font-weight:600;font-size:17px;margin:0 0 18px;color:var(--navy);
+    display:flex;align-items:center;gap:9px}
+  .card h2 .em{font-size:18px}
+
+  /* session overview */
+  .ov{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+  .stat{background:var(--bg);border-radius:12px;padding:22px 16px;text-align:center}
+  .stat .v{font-family:'Space Grotesk';font-weight:700;font-size:34px;color:var(--navy);line-height:1}
+  .stat .l{font-size:13px;color:var(--muted);margin-top:8px}
+
+  /* control groups */
+  .grp{padding:16px 0;border-top:1px solid var(--line)}
+  .grp:first-of-type{border-top:none;padding-top:0}
+  .grp .desc{font-size:13.5px;margin:0 0 12px;color:var(--muted)}
+  .grp .desc b{color:var(--ink);font-weight:600}
+  .row{display:flex;flex-wrap:wrap;gap:9px;align-items:center}
+  button{font-family:'Inter';font-weight:600;font-size:14px;border:1px solid transparent;border-radius:11px;
+    padding:11px 16px;cursor:pointer;transition:.12s;display:inline-flex;align-items:center;gap:8px;color:#fff}
+  button:active{transform:scale(.98)}
+  button:disabled{opacity:.45;cursor:default}
+  .b-poll{background:var(--blue-soft);color:var(--blue);border-color:#cfddf6}
+  .b-poll.on{background:var(--blue);color:#fff;border-color:var(--blue)}
+  .b-poll .n{font-size:11px;opacity:.7;font-weight:700}
+  .b-gray{background:#eef0f4;color:#5a6273;border-color:#e0e3ea}
+  .b-teal{background:var(--teal)} .b-amber{background:var(--amber)} .b-red{background:var(--red)}
+  .b-out{background:#fff;color:var(--ink);border-color:var(--line)}
+  .pill{font-size:12px;font-weight:600;padding:5px 11px;border-radius:999px}
+  .pill.live{background:#e3f4ec;color:#13633f}.pill.off{background:#fbeedd;color:#7a4d0c}
+
+  /* responses */
+  .tools{display:flex;gap:10px;margin-bottom:14px;flex-wrap:wrap}
+  .tools input{flex:1;min-width:200px;font-size:14px;padding:11px 14px;border:1px solid var(--line);border-radius:11px;outline:none}
+  .tools input:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(47,111,196,.12)}
+  .resp{border:1px solid var(--line);border-radius:12px;min-height:120px;max-height:340px;overflow:auto;padding:6px}
+  .resp .empty{color:#9aa3b8;text-align:center;padding:40px 10px;font-size:14px}
+  .wrow{display:flex;align-items:center;justify-content:space-between;padding:9px 12px;border-radius:8px}
+  .wrow:nth-child(odd){background:#f7f9fc}
+  .wrow .t{font-size:14.5px}.wrow .c{font-family:'Space Grotesk';font-weight:700;color:var(--blue);font-size:14px}
+  .wbar{height:6px;border-radius:3px;background:var(--blue);opacity:.25;margin-top:5px}
+
+  /* quick links */
+  .links{display:flex;flex-wrap:wrap;gap:10px}
+  .links a{text-decoration:none;background:var(--blue-soft);color:var(--blue);font-weight:600;font-size:14px;
+    padding:11px 15px;border-radius:11px;display:inline-flex;align-items:center;gap:8px}
+  .mode{margin-top:6px;font-size:12.5px;color:var(--muted);display:flex;align-items:center;gap:7px}
+  .mode .md{width:8px;height:8px;border-radius:50%}
+  .mode.firebase .md{background:#1f7a5e}.mode.local .md{background:var(--amber)}
+  .note{background:#fff7ec;border:1px solid #f1d9b3;border-radius:12px;padding:11px 14px;font-size:12.5px;color:#7a5a1e;line-height:1.5}
+</style>
+</head>
+<body>
+<header>
+  <h1>Innovation Hub — Admin</h1>
+  <p>Inno Talk #4 — Contrôles présentateur</p>
+</header>
+<div class="wrap">
+
+  <div class="card">
+    <h2><span class="em">📊</span> Vue de session</h2>
+    <div class="ov">
+      <div class="stat"><div class="v" id="ovPart">0</div><div class="l">Participants connectés</div></div>
+      <div class="stat"><div class="v" id="ovActive">0</div><div class="l">Réponses — sondage actif</div></div>
+      <div class="stat"><div class="v" id="ovTotal">0</div><div class="l">Réponses au total</div></div>
+    </div>
+    <div class="mode" id="mode"><span class="md"></span><span id="modetxt"></span></div>
+  </div>
+
+  <div class="card">
+    <h2><span class="em">🎛️</span> Contrôles</h2>
+
+    <div class="grp">
+      <p class="desc"><b>Sondage actif</b> — s'affiche aussitôt sur les téléphones et l'écran. Cliquer ouvre le vote.</p>
+      <div class="row" id="pollRow"></div>
+      <div class="row" style="margin-top:9px">
+        <button class="b-gray" id="hideBtn">Masquer (aucun sondage)</button>
+      </div>
+    </div>
+
+    <div class="grp">
+      <p class="desc"><b>Vote en cours</b> — verrouille ou rouvre la saisie sans changer l'affichage. <span id="voteState" class="pill off">aucun</span></p>
+      <div class="row"><button class="b-teal" id="toggleBtn" disabled>Ouvrir le vote</button></div>
+    </div>
+
+    <div class="grp">
+      <p class="desc"><b>Sondage 3 — révélation</b> — met « Qualification &amp; standards » en avant (slide 23). Actif uniquement sur S3.</p>
+      <div class="row"><button class="b-amber" id="revealBtn" disabled>Révéler le vrai frein</button></div>
+    </div>
+
+    <div class="grp">
+      <p class="desc"><b>Réinitialiser</b> — supprime toutes les réponses et participants (protégé par mot de passe).</p>
+      <div class="row"><button class="b-red" id="resetBtn">🗑️ Réinitialiser les données</button></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2><span class="em">🗂️</span> Réponses — sondage actif</h2>
+    <div class="tools">
+      <input id="search" type="text" placeholder="Filtrer les réponses…">
+      <button class="b-out" id="refreshBtn">↻ Rafraîchir</button>
+    </div>
+    <div class="resp" id="resp"><div class="empty">Sélectionnez un sondage pour voir les réponses.</div></div>
+  </div>
+
+  <div class="card">
+    <h2><span class="em">🔗</span> Liens rapides</h2>
+    <div class="links">
+      <a href="index.html" target="_blank">📝 Page participant</a>
+      <a href="display.html" target="_blank">🖥️ Écran de résultats (projection)</a>
+      <a id="joinLink" target="_blank">🔗 Lien public (QR)</a>
+    </div>
+    <div class="note" id="setupNote" style="display:none;margin-top:14px"></div>
+  </div>
+
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-database-compat.js"></script>
+<script src="store.js"></script>
+<script>
+(function(){
+  const $=id=>document.getElementById(id);
+
+  // mode + setup note
+  const modeEl=$('mode');
+  if(Store.mode==='firebase'){ modeEl.classList.add('firebase'); $('modetxt').textContent='Temps réel · multi-appareils'; }
+  else{ modeEl.classList.add('local'); $('modetxt').textContent='Mode démo local (même appareil)';
+    $('setupNote').style.display='block';
+    $('setupNote').innerHTML='<b>Mode démo local.</b> Renseignez la config Firebase dans <b>store.js</b> pour synchroniser tous les téléphones du public.'; }
+
+  // join link
+  const joinUrl=(CONFIG.joinUrl&&CONFIG.joinUrl.indexOf('VOTRE-')===-1)?CONFIG.joinUrl:location.href.replace(/admin\.html.*$/,'');
+  $('joinLink').href=joinUrl;
+
+  // poll buttons
+  const pollRow=$('pollRow');
+  POLL_ORDER.forEach(id=>{ const p=POLLS[id];
+    const b=document.createElement('button'); b.className='b-poll'; b.dataset.id=id;
+    b.innerHTML='<span class="n">S'+p.n+'</span> '+(p.type==='wordcloud'?'Word cloud':'QCM');
+    b.onclick=()=>Store.setControl({activePoll:id,status:{[id]:'open'},reveal:false});
+    pollRow.appendChild(b);
+  });
+  $('hideBtn').onclick=()=>Store.setControl({activePoll:'none',reveal:false});
+  $('toggleBtn').onclick=()=>{ const a=ctrl.activePoll; if(!a||a==='none')return;
+    const open=((ctrl.status&&ctrl.status[a])||'closed')==='open'; Store.setControl({status:{[a]:open?'closed':'open'}}); };
+  $('revealBtn').onclick=()=>{ if(ctrl.activePoll!=='s3')return; Store.setControl({reveal:!ctrl.reveal}); };
+  $('resetBtn').onclick=()=>{ const pw=prompt('Mot de passe administrateur :'); if(pw===null)return;
+    if(pw!==CONFIG.adminPassword){alert('Mot de passe incorrect.');return;}
+    if(confirm('Supprimer toutes les réponses et participants ?')){ Store.reset(); Store.setControl({activePoll:'none',status:{},reveal:false}); } };
+
+  // counts
+  Store.onParticipantCount(n=>$('ovPart').textContent=n);
+  const counts={}; let totalAll=0;
+  POLL_ORDER.forEach(id=>{ counts[id]=[]; Store.onResponses(id,rows=>{ counts[id]=rows;
+    totalAll=POLL_ORDER.reduce((s,k)=>s+(counts[k]?counts[k].length:0),0); $('ovTotal').textContent=totalAll;
+    if(ctrl.activePoll===id){ $('ovActive').textContent=rows.length; renderResp(); } }); });
+
+  // control state
+  let ctrl={activePoll:'none',status:{},reveal:false};
+  Store.onControl(c=>{ ctrl=Object.assign({activePoll:'none',status:{},reveal:false},c||{});
+    const a=ctrl.activePoll||'none';
+    pollRow.querySelectorAll('.b-poll').forEach(b=>b.classList.toggle('on',b.dataset.id===a));
+    $('ovActive').textContent = a==='none'?0:(counts[a]?counts[a].length:0);
+    // toggle vote
+    const tb=$('toggleBtn'), vs=$('voteState');
+    if(a==='none'){ tb.disabled=true; tb.textContent='Ouvrir le vote'; vs.textContent='aucun'; vs.className='pill off'; }
+    else{ tb.disabled=false; const open=((ctrl.status&&ctrl.status[a])||'closed')==='open';
+      tb.textContent=open?'Fermer le vote':'Rouvrir le vote';
+      vs.textContent=open?'ouvert':'fermé'; vs.className='pill '+(open?'live':'off'); }
+    // reveal
+    const rb=$('revealBtn'); rb.disabled = a!=='s3';
+    rb.textContent = (a==='s3'&&ctrl.reveal)?'Masquer la révélation':'Révéler le vrai frein';
+    renderResp();
+  });
+
+  // responses list (sondage actif)
+  $('refreshBtn').onclick=renderResp;
+  $('search').addEventListener('input',renderResp);
+  function renderResp(){
+    const a=ctrl.activePoll, box=$('resp'), q=($('search').value||'').toLowerCase().trim();
+    if(!a||a==='none'){ box.innerHTML='<div class="empty">Aucun sondage actif.</div>'; return; }
+    const poll=POLLS[a], rows=counts[a]||[];
+    if(!rows.length){ box.innerHTML='<div class="empty">Aucune réponse pour l\'instant.</div>'; return; }
+    let agg=[];
+    if(poll.type==='wordcloud'){
+      const m={},d={}; rows.forEach(r=>{ let raw=(r.text||'').trim().replace(/[.,!?;:·]+$/,''); if(!raw)return;
+        const k=raw.toLowerCase(); m[k]=(m[k]||0)+1; if(!d[k])d[k]=raw; });
+      agg=Object.keys(m).map(k=>({lab:d[k],c:m[k]})).sort((x,y)=>y.c-x.c);
+    } else {
+      const m={}; poll.options.forEach(o=>m[o.id]=0); rows.forEach(r=>{ if(m[r.choice]!=null)m[r.choice]++; });
+      agg=poll.options.map(o=>({lab:o.label,c:m[o.id]})).sort((x,y)=>y.c-x.c);
+    }
+    const max=Math.max(1,...agg.map(a=>a.c));
+    const filtered=agg.filter(a=>!q||a.lab.toLowerCase().includes(q));
+    if(!filtered.length){ box.innerHTML='<div class="empty">Aucun résultat.</div>'; return; }
+    box.innerHTML=filtered.map(a=>'<div class="wrow"><div style="flex:1"><div class="t">'+esc(a.lab)+'</div>'
+      +'<div class="wbar" style="width:'+(a.c/max*100)+'%"></div></div><div class="c">'+a.c+'</div></div>').join('');
+  }
+  function esc(s){return String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));}
+})();
+</script>
+</body>
+</html>
