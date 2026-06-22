@@ -3,290 +3,161 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-<title>Inno Talk #4 — Join the live poll</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<title>Inno Talk #4 — Live poll</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
 <style>
-  :root{
-    --navy:#14225e; --royal:#1f2f8f; --blue:#2e5fd0; --blue-soft:#e7edfb;
-    --teal:#1b9e8f; --amber:#e0892f;
-    --ink:#101631; --muted:#5b6478; --line:#dde3ef;
-    --bg:#eef2fb; --card:#ffffff;
-    --shadow:0 10px 30px rgba(20,34,94,.10);
-    --radius:18px;
-  }
-  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
-  html,body{margin:0;padding:0;}
-  body{
-    font-family:'Inter',system-ui,sans-serif;
-    color:var(--ink);
-    background:
-      radial-gradient(120% 80% at 50% -10%, #f6f8ff 0%, var(--bg) 55%) ,
-      var(--bg);
-    min-height:100dvh;
-    display:flex;flex-direction:column;
-  }
-  .wrap{flex:1;display:flex;flex-direction:column;max-width:560px;width:100%;margin:0 auto;padding:18px 18px 28px;}
-  /* top brand */
-  .brand{display:flex;align-items:center;gap:10px;padding:4px 2px 14px;}
-  .spark{flex:none}
-  .brand b{font-family:'Space Grotesk';font-weight:600;font-size:15px;letter-spacing:.2px;color:var(--navy);}
-  .brand span{font-size:12px;color:var(--muted);display:block;margin-top:1px;letter-spacing:.3px}
-  .live{margin-left:auto;font-size:11px;font-weight:700;letter-spacing:.12em;color:var(--blue);
-    display:flex;align-items:center;gap:6px;text-transform:uppercase}
-  .dot{width:8px;height:8px;border-radius:50%;background:var(--blue);box-shadow:0 0 0 0 rgba(46,95,208,.5);animation:pulse 1.8s infinite}
+  :root{--navy:#14225e;--royal:#1f2f8f;--blue:#2e5fd0;--blue-soft:#e7edfb;--teal:#1b9e8f;
+    --ink:#101631;--muted:#5b6478;--line:#dde3ef;--bg:#eef2fb;--card:#fff;
+    --shadow:0 10px 30px rgba(20,34,94,.10);--radius:18px;}
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  html,body{margin:0}
+  body{font-family:'Inter',system-ui,sans-serif;color:var(--ink);
+    background:radial-gradient(120% 80% at 50% -10%,#f6f8ff 0%,var(--bg) 55%),var(--bg);min-height:100dvh;display:flex;flex-direction:column}
+  .wrap{flex:1;display:flex;flex-direction:column;max-width:560px;width:100%;margin:0 auto;padding:18px 18px 28px}
+  .brand{display:flex;align-items:center;gap:10px;padding:4px 2px 14px}
+  .brand b{font-family:'Space Grotesk';font-weight:600;font-size:15px;color:var(--navy)}
+  .brand span{font-size:12px;color:var(--muted);display:block;margin-top:1px}
+  .live{margin-left:auto;font-size:11px;font-weight:700;letter-spacing:.12em;color:var(--blue);display:flex;align-items:center;gap:6px;text-transform:uppercase}
+  .dot{width:8px;height:8px;border-radius:50%;background:var(--blue);animation:pulse 1.8s infinite}
   @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(46,95,208,.45)}70%{box-shadow:0 0 0 9px rgba(46,95,208,0)}100%{box-shadow:0 0 0 0 rgba(46,95,208,0)}}
-
-  /* card */
-  .card{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);
-    border:1px solid var(--line);padding:26px 22px;animation:rise .4s cubic-bezier(.2,.8,.2,1);}
+  .card{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);border:1px solid var(--line);padding:26px 22px;animation:rise .4s cubic-bezier(.2,.8,.2,1)}
   @keyframes rise{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
-  .eyebrow{font-family:'Space Grotesk';font-weight:600;font-size:12px;letter-spacing:.16em;
-    text-transform:uppercase;color:var(--blue);margin:0 0 12px}
-  .q{font-family:'Space Grotesk';font-weight:600;font-size:23px;line-height:1.28;margin:0 0 6px;color:var(--ink)}
+  .eyebrow{font-family:'Space Grotesk';font-weight:600;font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--blue);margin:0 0 12px}
+  .q{font-family:'Space Grotesk';font-weight:600;font-size:22px;line-height:1.28;margin:0 0 6px}
   .qsub{font-size:14.5px;color:var(--muted);margin:8px 0 0;line-height:1.45}
-  .chips{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0 0}
-  .chip{font-size:13px;font-weight:600;color:var(--royal);background:var(--blue-soft);
-    border-radius:999px;padding:7px 13px}
-  .hint{font-size:14px;color:var(--muted);margin:10px 0 0}
-
-  /* word cloud input */
   .field{margin-top:20px}
-  .field input{width:100%;font-family:'Inter';font-size:18px;padding:16px 16px;border-radius:14px;
-    border:1.5px solid var(--line);background:#fbfcff;color:var(--ink);outline:none;transition:.15s}
-  .field input:focus{border-color:var(--blue);background:#fff;box-shadow:0 0 0 4px rgba(46,95,208,.12)}
+  .field input,.field textarea{width:100%;font-family:'Inter';font-size:17px;padding:15px;border-radius:14px;border:1.5px solid var(--line);background:#fbfcff;color:var(--ink);outline:none;transition:.15s}
+  .field textarea{min-height:104px;resize:vertical;line-height:1.45}
+  .field input:focus,.field textarea:focus{border-color:var(--blue);background:#fff;box-shadow:0 0 0 4px rgba(46,95,208,.12)}
   .counter{text-align:right;font-size:12px;color:var(--muted);margin-top:6px;height:14px}
-
-  .btn{width:100%;border:none;cursor:pointer;font-family:'Space Grotesk';font-weight:600;
-    font-size:17px;color:#fff;background:var(--royal);padding:16px;border-radius:14px;margin-top:14px;
-    transition:transform .08s, background .15s;display:flex;align-items:center;justify-content:center;gap:8px}
-  .btn:active{transform:scale(.985)}
-  .btn:disabled{background:#aeb6cd;cursor:default}
-  .btn.secondary{background:var(--blue-soft);color:var(--royal)}
-
-  /* choices */
-  .choices{display:flex;flex-direction:column;gap:11px;margin-top:22px}
-  .choice{display:flex;align-items:center;gap:14px;padding:16px 18px;border-radius:14px;
-    border:1.5px solid var(--line);background:#fbfcff;cursor:pointer;
-    font-size:16px;font-weight:500;color:var(--ink);text-align:left;transition:.12s;width:100%}
-  .choice .mk{flex:none;width:24px;height:24px;border-radius:50%;border:2px solid #c6cee0;transition:.12s}
-  .choice:active{transform:scale(.99)}
-  .choice:hover{border-color:#b9c4e6}
+  .btn{width:100%;border:none;cursor:pointer;font-family:'Space Grotesk';font-weight:600;font-size:17px;color:#fff;background:var(--royal);padding:16px;border-radius:14px;margin-top:14px;transition:transform .08s,background .15s;display:flex;align-items:center;justify-content:center;gap:8px}
+  .btn:active{transform:scale(.985)}.btn:disabled{background:#aeb6cd;cursor:default}
+  .choices{display:flex;flex-direction:column;gap:11px;margin-top:20px}
+  .choice{display:flex;align-items:center;gap:14px;padding:15px 17px;border-radius:14px;border:1.5px solid var(--line);background:#fbfcff;cursor:pointer;font-size:16px;font-weight:500;color:var(--ink);text-align:left;width:100%;transition:.12s}
+  .choice .mk{flex:none;width:24px;height:24px;border-radius:7px;border:2px solid #c6cee0;display:flex;align-items:center;justify-content:center;transition:.12s}
+  .choice .mk svg{opacity:0;transition:.12s}
   .choice.sel{border-color:var(--royal);background:#fff;box-shadow:0 0 0 3px rgba(31,47,143,.10)}
-  .choice.sel .mk{border-color:var(--royal);background:var(--royal);box-shadow:inset 0 0 0 4px #fff}
-
-  /* status / waiting / closed / confirm */
+  .choice.sel .mk{border-color:var(--royal);background:var(--royal)}.choice.sel .mk svg{opacity:1}
+  .otherwrap{margin-top:11px}
+  .otherwrap input{width:100%;font-size:16px;padding:13px 15px;border-radius:12px;border:1.5px solid var(--line);background:#fbfcff;outline:none}
+  .otherwrap input:focus{border-color:var(--blue);background:#fff}
+  .hint{font-size:14px;color:var(--muted);margin:10px 0 0}
+  .pills{display:flex;flex-direction:column;gap:8px;margin-top:16px}
+  .pill{font-size:14px;background:var(--blue-soft);color:var(--royal);border-radius:12px;padding:9px 13px;font-weight:500;animation:rise .35s both;line-height:1.4}
   .state{text-align:center;padding:30px 8px}
-  .state .ic{width:74px;height:74px;border-radius:50%;display:flex;align-items:center;justify-content:center;
-    margin:0 auto 18px;background:var(--blue-soft)}
-  .state h2{font-family:'Space Grotesk';font-weight:600;font-size:21px;margin:0 0 8px;color:var(--ink)}
-  .state p{font-size:15px;color:var(--muted);margin:0;line-height:1.5}
+  .state .ic{width:74px;height:74px;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 18px;background:var(--blue-soft)}
   .state.ok .ic{background:#e3f5f1}
-  .breathe{animation:breathe 2.4s ease-in-out infinite}
-  @keyframes breathe{0%,100%{opacity:.55;transform:scale(1)}50%{opacity:1;transform:scale(1.06)}}
-
-  .pills{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-top:18px}
-  .pill{font-size:13px;background:var(--blue-soft);color:var(--royal);border-radius:999px;
-    padding:7px 13px;font-weight:600;animation:rise .35s both}
-
-  .foot{margin-top:auto;padding-top:22px;text-align:center;font-size:11.5px;color:#9aa3b8;line-height:1.5}
-  .foot b{color:var(--muted);font-weight:600}
-
-  /* setup banner (config missing) */
-  .banner{margin:0 0 14px;background:#fff7ec;border:1px solid #f1d9b3;border-radius:14px;
-    padding:12px 14px;font-size:12.5px;color:#7a5a1e;line-height:1.5}
-  .banner b{color:#5e4310}
-  .toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%) translateY(20px);
-    background:var(--ink);color:#fff;padding:12px 20px;border-radius:999px;font-size:14px;font-weight:500;
-    opacity:0;pointer-events:none;transition:.25s;z-index:50;box-shadow:0 8px 24px rgba(0,0,0,.25)}
+  .state h2{font-family:'Space Grotesk';font-weight:600;font-size:21px;margin:0 0 8px}
+  .state p{font-size:15px;color:var(--muted);margin:0;line-height:1.5}
+  .breathe{animation:breathe 2.4s ease-in-out infinite}@keyframes breathe{0%,100%{opacity:.55;transform:scale(1)}50%{opacity:1;transform:scale(1.06)}}
+  /* hub */
+  .hub h2{font-family:'Space Grotesk';font-weight:600;font-size:20px;margin:0 0 16px}
+  .hub a{display:flex;align-items:center;gap:12px;text-decoration:none;color:var(--ink);border:1px solid var(--line);border-radius:14px;padding:15px 16px;margin-bottom:10px;background:#fbfcff}
+  .hub a .pn{font-family:'Space Grotesk';font-weight:700;color:var(--royal)}
+  .hub a .st{margin-left:auto;font-size:12px;font-weight:600;padding:5px 11px;border-radius:999px}
+  .st.open{background:#e3f5f1;color:#0e6e56}.st.closed{background:#f0f1f5;color:#7c8496}
+  .foot{margin-top:auto;padding-top:22px;text-align:center;font-size:11.5px;color:#9aa3b8;line-height:1.5}.foot b{color:var(--muted);font-weight:600}
+  .banner{margin:0 0 14px;background:#fff7ec;border:1px solid #f1d9b3;border-radius:14px;padding:12px 14px;font-size:12.5px;color:#7a5a1e;line-height:1.5}
+  .toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%) translateY(20px);background:var(--ink);color:#fff;padding:12px 20px;border-radius:999px;font-size:14px;font-weight:500;opacity:0;pointer-events:none;transition:.25s;z-index:50}
   .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 </style>
 </head>
 <body>
   <div class="wrap">
     <div class="brand">
-      <svg class="spark" width="26" height="26" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-        <g stroke="#1f2f8f" stroke-width="2.4" stroke-linecap="round">
-          <path d="M12 3.5v4"/><path d="M12 16.5v4"/>
-          <path d="M3.5 12h4"/><path d="M16.5 12h4"/>
-          <path d="M6 6l2.4 2.4"/><path d="M15.6 15.6L18 18"/>
-          <path d="M18 6l-2.4 2.4"/><path d="M8.4 15.6L6 18"/>
-        </g>
-      </svg>
-      <div>
-        <b>Innovation Hub</b>
-        <span>Inno Talk #4 · Live</span>
-      </div>
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none"><g stroke="#1f2f8f" stroke-width="2.4" stroke-linecap="round"><path d="M12 3.5v4"/><path d="M12 16.5v4"/><path d="M3.5 12h4"/><path d="M16.5 12h4"/><path d="M6 6l2.4 2.4"/><path d="M15.6 15.6L18 18"/><path d="M18 6l-2.4 2.4"/><path d="M8.4 15.6L6 18"/></g></svg>
+      <div><b>Innovation Hub</b><span>Inno Talk #4 · Live</span></div>
       <div class="live"><span class="dot"></span>Live</div>
     </div>
-
     <div id="setup" class="banner" style="display:none"></div>
-
     <div id="stage"></div>
-
-    <div class="foot">
-      <b>Vallourec — Innovation Hub</b><br>
-      We craft steel solutions that deliver energy with a +
-    </div>
+    <div class="foot"><b>Vallourec — Innovation Hub</b><br>We craft steel solutions that deliver energy with a +</div>
   </div>
-
   <div id="toast" class="toast"></div>
 
-  <!-- Firebase (utilisé seulement si configuré dans store.js) -->
   <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-database-compat.js"></script>
   <script src="store.js"></script>
   <script>
   (function(){
-    const stage = document.getElementById('stage');
-    const setup = document.getElementById('setup');
-    const toastEl = document.getElementById('toast');
+    const stage=document.getElementById('stage'), toastEl=document.getElementById('toast');
+    if(Store.mode==='local'){ const s=document.getElementById('setup'); s.style.display='block';
+      s.innerHTML='<b>Mode démo local.</b> Configurez Firebase dans store.js pour le temps réel multi-appareils.'; }
+    function toast(m){ toastEl.textContent=m; toastEl.classList.add('show'); clearTimeout(toast._t); toast._t=setTimeout(()=>toastEl.classList.remove('show'),1600); }
+    function esc(s){return String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));}
 
-    if (Store.mode === 'local'){
-      setup.style.display='block';
-      setup.innerHTML = '<b>Mode démo local.</b> Firebase n\'est pas encore configuré : '
-        + 'cette page ne se synchronise qu\'avec les autres onglets de cet ordinateur. '
-        + 'Renseignez votre config dans <b>store.js</b> pour le temps réel multi-appareils.';
-    }
-
-    // identité participant (stable sur la session)
-    let pid;
-    try{ pid = sessionStorage.getItem('it4-pid');
-         if(!pid){ pid='p'+Math.random().toString(36).slice(2)+Date.now().toString(36); sessionStorage.setItem('it4-pid',pid);} }
-    catch(e){ pid='p'+Math.random().toString(36).slice(2)+Date.now().toString(36); }
+    let pid; try{ pid=sessionStorage.getItem('it4-pid'); if(!pid){pid='p'+Math.random().toString(36).slice(2)+Date.now().toString(36); sessionStorage.setItem('it4-pid',pid);} }catch(e){ pid='p'+Math.random().toString(36).slice(2); }
     Store.registerParticipant(pid);
+    const voted=new Set(); try{(JSON.parse(sessionStorage.getItem('it4-voted'))||[]).forEach(x=>voted.add(x));}catch(e){}
+    function markVoted(id){ voted.add(id); try{sessionStorage.setItem('it4-voted',JSON.stringify([...voted]));}catch(e){} }
 
-    // sondages déjà répondus (QCM = 1 vote)
-    const voted = new Set();
-    try{ (JSON.parse(sessionStorage.getItem('it4-voted'))||[]).forEach(x=>voted.add(x)); }catch(e){}
-    function markVoted(id){ voted.add(id); try{ sessionStorage.setItem('it4-voted',JSON.stringify([...voted])); }catch(e){} }
+    const pollId=new URLSearchParams(location.search).get('poll');
+    const poll = pollId && POLLS[pollId] ? POLLS[pollId] : null;
 
-    function toast(msg){ toastEl.textContent=msg; toastEl.classList.add('show');
-      clearTimeout(toast._t); toast._t=setTimeout(()=>toastEl.classList.remove('show'),1700); }
-
-    let current = null;       // pollId actuellement rendu
-    let renderedKey = '';     // pour éviter les re-render inutiles
-
-    function render(control){
-      const active = control.activePoll || 'none';
-      const status = (control.status && control.status[active]) || 'closed';
-      const key = active + ':' + status;
-      // si même état qu'avant, ne pas recasser l'UI (préserver la saisie en cours)
-      if (key === renderedKey) return;
-      renderedKey = key;
-      current = active;
-
-      if (active === 'none'){ return waiting(); }
-      const poll = POLLS[active];
-      if (status !== 'open'){ return closed(poll); }
-      if (poll.type === 'choice' && voted.has(active)){ return choiceDone(poll); }
-      if (poll.type === 'choice') return renderChoice(poll, active);
-      return renderWordcloud(poll, active);
+    if(!poll){ // hub : liste des 4 sondages
+      Store.onControl(c=>{
+        const st=c.status||{};
+        let h='<div class="card hub"><h2>Inno Talk #4 — live polls</h2>';
+        POLL_ORDER.forEach(id=>{ const p=POLLS[id]; const open=(st[id]||'closed')==='open';
+          h+='<a href="?poll='+id+'"><span class="pn">S'+p.n+'</span><span>'+(p.type==='wordcloud'?'Word cloud':p.type==='open'?'Open answer':'Multiple choice')+'</span><span class="st '+(open?'open':'closed')+'">'+(open?'open':'closed')+'</span></a>'; });
+        h+='</div>'; stage.innerHTML=h;
+      });
+      return;
     }
 
-    function waiting(){
-      stage.innerHTML =
-        '<div class="card"><div class="state">'
-        + '<div class="ic breathe"><svg width="30" height="30" viewBox="0 0 24 24" fill="none">'
-        + '<circle cx="12" cy="12" r="9" stroke="#2e5fd0" stroke-width="2"/>'
-        + '<path d="M12 7v5l3 2" stroke="#2e5fd0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>'
-        + '<h2>You\'re in. Hold tight.</h2>'
-        + '<p>The next poll will appear here the moment the host opens it.</p>'
-        + '</div></div>';
-    }
+    let renderedKey='';
+    Store.onControl(c=>{
+      const open=((c.status||{})[pollId]||'closed')==='open';
+      const key = open ? 'open' : 'closed';
+      if(poll.type==='multi' && voted.has(pollId)){ if(renderedKey!=='done'){renderedKey='done'; done();} return; }
+      if(key===renderedKey) return; renderedKey=key;
+      if(!open) return closed();
+      if(poll.type==='wordcloud') return wc();
+      if(poll.type==='open') return openq();
+      return multi();
+    });
 
-    function closed(poll){
-      stage.innerHTML =
-        '<div class="card"><div class="state ok">'
-        + '<div class="ic"><svg width="30" height="30" viewBox="0 0 24 24" fill="none">'
-        + '<path d="M5 13l4 4L19 7" stroke="#1b9e8f" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>'
-        + '<h2>This poll is closed.</h2>'
-        + '<p>Thanks for taking part — stay tuned for the next one.</p>'
-        + '</div></div>';
-    }
+    function head(tag){ return '<p class="eyebrow">Poll '+poll.n+' of 4 · '+tag+'</p><h1 class="q">'+esc(poll.question)+'</h1>'+(poll.sub?'<p class="qsub">'+esc(poll.sub)+'</p>':''); }
+    function closed(){ stage.innerHTML='<div class="card"><div class="state"><div class="ic breathe"><svg width="30" height="30" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="#2e5fd0" stroke-width="2"/><path d="M12 7v5l3 2" stroke="#2e5fd0" stroke-width="2" stroke-linecap="round"/></svg></div><h2>This poll isn\'t open right now.</h2><p>Keep this page open — it unlocks the moment the host opens it.</p></div></div>'; }
+    function done(){ stage.innerHTML='<div class="card"><div class="state ok"><div class="ic"><svg width="30" height="30" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="#1b9e8f" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></div><h2>Answer received.</h2><p>It\'s now in the live results on screen.</p></div></div>'; }
 
-    function choiceDone(poll){
-      stage.innerHTML =
-        '<div class="card"><div class="state ok">'
-        + '<div class="ic"><svg width="30" height="30" viewBox="0 0 24 24" fill="none">'
-        + '<path d="M5 13l4 4L19 7" stroke="#1b9e8f" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>'
-        + '<h2>Vote received.</h2>'
-        + '<p>Your answer is now in the live results on screen.</p>'
-        + '</div></div>';
+    function wc(){
+      stage.innerHTML='<div class="card">'+head('word cloud')+'<div class="field"><input id="in" type="text" maxlength="40" autocomplete="off" autocapitalize="none" placeholder="'+esc(poll.placeholder||'')+'"><div class="counter"><span id="cc">0</span>/40</div></div><button class="btn" id="send">Send</button><div class="pills" id="mine"></div></div>';
+      wire(40);
     }
-
-    /* ---- word cloud submission ---- */
-    function renderWordcloud(poll, id){
-      stage.innerHTML =
-        '<div class="card">'
-        + '<p class="eyebrow">Poll '+poll.n+' of 4 · word cloud</p>'
-        + '<h1 class="q">'+esc(poll.question)+'</h1>'
-        + (poll.sub?'<p class="qsub">'+esc(poll.sub)+'</p>':'')
-        + '<div class="field">'
-        +   '<input id="wc" type="text" maxlength="40" autocomplete="off" autocapitalize="none" '
-        +     'placeholder="'+esc(poll.placeholder||'Type a word…')+'">'
-        +   '<div class="counter"><span id="cc">0</span>/40</div>'
-        + '</div>'
-        + '<button class="btn" id="send">Send</button>'
-        + '<p class="hint">'+esc(poll.hint||'')+'</p>'
-        + '<div class="pills" id="mine"></div>'
-        + '</div>';
-      const input = document.getElementById('wc');
-      const cc = document.getElementById('cc');
-      const send = document.getElementById('send');
-      const mine = document.getElementById('mine');
-      input.focus();
-      input.addEventListener('input',()=>{ cc.textContent = input.value.length; });
-      function submit(){
-        const t = input.value.trim().replace(/\s+/g,' ');
-        if(!t){ input.focus(); return; }
-        if (current !== id){ return; }      // l'hôte a changé de sondage entre-temps
-        Store.addResponse(id, { text: t });
-        const p=document.createElement('span'); p.className='pill'; p.textContent=t; mine.appendChild(p);
-        input.value=''; cc.textContent='0'; input.focus();
-        toast('Added ✓');
-      }
+    function openq(){
+      stage.innerHTML='<div class="card">'+head('open answer')+'<div class="field"><textarea id="in" maxlength="280" placeholder="'+esc(poll.placeholder||'')+'"></textarea><div class="counter"><span id="cc">0</span>/280</div></div><button class="btn" id="send">Send answer</button><p class="hint">You can submit several.</p><div class="pills" id="mine"></div></div>';
+      wire(280);
+    }
+    function wire(max){
+      const inp=document.getElementById('in'),cc=document.getElementById('cc'),send=document.getElementById('send'),mine=document.getElementById('mine');
+      inp.focus(); inp.addEventListener('input',()=>cc.textContent=inp.value.length);
+      function submit(){ const t=inp.value.trim().replace(/\s+/g,' '); if(!t)return; if(((curStatus())!=='open'))return;
+        Store.addResponse(pollId,{text:t}); const p=document.createElement('span');p.className='pill';p.textContent=t;mine.appendChild(p);
+        inp.value='';cc.textContent='0';inp.focus(); toast('Added ✓'); }
       send.addEventListener('click',submit);
-      input.addEventListener('keydown',e=>{ if(e.key==='Enter'){ e.preventDefault(); submit(); } });
+      if(inp.tagName==='INPUT') inp.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();submit();}});
+    }
+    function multi(){
+      const chk='<svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+      let h='<div class="card">'+head('multiple choice')+'<div class="choices">';
+      poll.options.forEach(o=>{ h+='<button class="choice" data-id="'+o.id+'"><span class="mk">'+chk+'</span><span>'+esc(o.full||o.label)+'</span></button>'; });
+      h+='</div>';
+      if(poll.allowOther) h+='<div class="otherwrap"><input id="other" type="text" maxlength="80" placeholder="Other — add your own…"></div>';
+      h+='<button class="btn" id="send" disabled>Submit my answer</button></div>';
+      stage.innerHTML=h;
+      const send=document.getElementById('send'), other=document.getElementById('other'), sel=new Set();
+      function refresh(){ send.disabled = sel.size===0 && !(other&&other.value.trim()); }
+      stage.querySelectorAll('.choice').forEach(b=>b.addEventListener('click',()=>{ const id=b.dataset.id;
+        if(sel.has(id)){sel.delete(id);b.classList.remove('sel');}else{sel.add(id);b.classList.add('sel');} refresh(); }));
+      if(other) other.addEventListener('input',refresh);
+      send.addEventListener('click',()=>{ if(curStatus()!=='open')return;
+        Store.addResponse(pollId,{choices:[...sel],other:other?other.value.trim():''}); markVoted(pollId); done(); });
     }
 
-    /* ---- single choice ---- */
-    function renderChoice(poll, id){
-      let html =
-        '<div class="card">'
-        + '<p class="eyebrow">Poll '+poll.n+' of 4 · single choice</p>'
-        + '<h1 class="q">'+esc(poll.question)+'</h1>'
-        + (poll.sub?'<p class="qsub">'+esc(poll.sub)+'</p>':'')
-        + (poll.chips?'<div class="chips">'+poll.chips.map(c=>'<span class="chip">'+esc(c)+'</span>').join('')+'</div>':'')
-        + '<div class="choices">';
-      poll.options.forEach(o=>{
-        html += '<button class="choice" data-id="'+o.id+'"><span class="mk"></span><span>'+esc(o.full||o.label)+'</span></button>';
-      });
-      html += '</div>'
-        + '<button class="btn" id="send" disabled>Submit my answer</button>'
-        + '</div>';
-      stage.innerHTML = html;
-
-      let chosen = null;
-      const send = document.getElementById('send');
-      stage.querySelectorAll('.choice').forEach(b=>{
-        b.addEventListener('click',()=>{
-          stage.querySelectorAll('.choice').forEach(x=>x.classList.remove('sel'));
-          b.classList.add('sel'); chosen=b.dataset.id; send.disabled=false;
-        });
-      });
-      send.addEventListener('click',()=>{
-        if(!chosen || current!==id) return;
-        Store.addResponse(id, { choice: chosen });
-        markVoted(id);
-        choiceDone(poll);
-      });
-    }
-
-    function esc(s){ return String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
-
-    Store.onControl(render);
+    let _ctrl={status:{}}; Store.onControl(c=>_ctrl=c);
+    function curStatus(){ return (_ctrl.status||{})[pollId]||'closed'; }
   })();
   </script>
 </body>

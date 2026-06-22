@@ -1,140 +1,98 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Inno Talk #4 — Admin (présentateur)</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Inno Talk #4 — Admin</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet">
 <style>
-  :root{
-    --navy:#15457f; --ink:#16335f; --blue:#2f6fc4; --blue-soft:#e7eefb;
-    --teal:#1f7a5e; --amber:#9a6712; --red:#9a3a22;
-    --bg:#eef1f6; --card:#fff; --muted:#5b6478; --line:#e3e8f1;
-    --radius:16px; --shadow:0 8px 26px rgba(21,69,127,.07);
-  }
-  *{box-sizing:border-box}
-  html,body{margin:0}
+  :root{--navy:#15457f;--ink:#16335f;--blue:#2f6fc4;--blue-soft:#e7eefb;--teal:#1f7a5e;--amber:#9a6712;--red:#9a3a22;
+    --bg:#eef1f6;--card:#fff;--muted:#5b6478;--line:#e3e8f1;--radius:16px;--shadow:0 8px 26px rgba(21,69,127,.07);}
+  *{box-sizing:border-box}html,body{margin:0}
   body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--ink);min-height:100dvh}
-  header{background:var(--navy);color:#fff;padding:20px 30px}
-  header h1{font-family:'Space Grotesk';font-weight:700;font-size:21px;margin:0;letter-spacing:.2px}
+  header{background:var(--navy);color:#fff;padding:18px 30px}
+  header h1{font-family:'Space Grotesk';font-weight:700;font-size:20px;margin:0}
   header p{margin:4px 0 0;font-size:13px;color:#bcd0ec}
-  .wrap{max-width:880px;margin:0 auto;padding:26px 20px 60px;display:flex;flex-direction:column;gap:22px}
-  .card{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);padding:24px 26px}
-  .card h2{font-family:'Space Grotesk';font-weight:600;font-size:17px;margin:0 0 18px;color:var(--navy);
-    display:flex;align-items:center;gap:9px}
-  .card h2 .em{font-size:18px}
-
-  /* session overview */
+  .wrap{max-width:920px;margin:0 auto;padding:24px 18px 60px;display:flex;flex-direction:column;gap:20px}
+  .card{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);padding:22px 24px}
+  .card h2{font-family:'Space Grotesk';font-weight:600;font-size:16px;margin:0 0 16px;color:var(--navy);display:flex;align-items:center;gap:9px}
   .ov{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
-  .stat{background:var(--bg);border-radius:12px;padding:22px 16px;text-align:center}
-  .stat .v{font-family:'Space Grotesk';font-weight:700;font-size:34px;color:var(--navy);line-height:1}
-  .stat .l{font-size:13px;color:var(--muted);margin-top:8px}
-
-  /* control groups */
-  .grp{padding:16px 0;border-top:1px solid var(--line)}
-  .grp:first-of-type{border-top:none;padding-top:0}
-  .grp .desc{font-size:13.5px;margin:0 0 12px;color:var(--muted)}
-  .grp .desc b{color:var(--ink);font-weight:600}
-  .row{display:flex;flex-wrap:wrap;gap:9px;align-items:center}
-  button{font-family:'Inter';font-weight:600;font-size:14px;border:1px solid transparent;border-radius:11px;
-    padding:11px 16px;cursor:pointer;transition:.12s;display:inline-flex;align-items:center;gap:8px;color:#fff}
-  button:active{transform:scale(.98)}
-  button:disabled{opacity:.45;cursor:default}
-  .b-poll{background:var(--blue-soft);color:var(--blue);border-color:#cfddf6}
-  .b-poll.on{background:var(--blue);color:#fff;border-color:var(--blue)}
-  .b-poll .n{font-size:11px;opacity:.7;font-weight:700}
+  .stat{background:var(--bg);border-radius:12px;padding:18px 14px;text-align:center}
+  .stat .v{font-family:'Space Grotesk';font-weight:700;font-size:30px;color:var(--navy);line-height:1}
+  .stat .l{font-size:12.5px;color:var(--muted);margin-top:7px}
+  .mode{margin-top:12px;font-size:12.5px;color:var(--muted);display:flex;align-items:center;gap:7px}
+  .mode .md{width:8px;height:8px;border-radius:50%}.mode.firebase .md{background:#1f7a5e}.mode.local .md{background:var(--amber)}
+  button{font-family:'Inter';font-weight:600;font-size:13.5px;border:1px solid transparent;border-radius:10px;padding:10px 14px;cursor:pointer;transition:.12s;color:#fff;display:inline-flex;align-items:center;gap:7px}
+  button:active{transform:scale(.98)}button:disabled{opacity:.45;cursor:default}
+  .b-teal{background:var(--teal)}.b-amber{background:var(--amber)}.b-red{background:var(--red)}.b-blue{background:var(--blue)}
   .b-gray{background:#eef0f4;color:#5a6273;border-color:#e0e3ea}
-  .b-teal{background:var(--teal)} .b-amber{background:var(--amber)} .b-red{background:var(--red)}
   .b-out{background:#fff;color:var(--ink);border-color:var(--line)}
-  .pill{font-size:12px;font-weight:600;padding:5px 11px;border-radius:999px}
-  .pill.live{background:#e3f4ec;color:#13633f}.pill.off{background:#fbeedd;color:#7a4d0c}
-
-  /* responses */
-  .tools{display:flex;gap:10px;margin-bottom:14px;flex-wrap:wrap}
-  .tools input{flex:1;min-width:200px;font-size:14px;padding:11px 14px;border:1px solid var(--line);border-radius:11px;outline:none}
-  .tools input:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(47,111,196,.12)}
-  .resp{border:1px solid var(--line);border-radius:12px;min-height:120px;max-height:340px;overflow:auto;padding:6px}
-  .resp .empty{color:#9aa3b8;text-align:center;padding:40px 10px;font-size:14px}
-  .wrow{display:flex;align-items:center;justify-content:space-between;padding:9px 12px;border-radius:8px}
-  .wrow:nth-child(odd){background:#f7f9fc}
-  .wrow .t{font-size:14.5px}.wrow .c{font-family:'Space Grotesk';font-weight:700;color:var(--blue);font-size:14px}
-  .wbar{height:6px;border-radius:3px;background:var(--blue);opacity:.25;margin-top:5px}
-
-  /* quick links */
+  .b-disp{background:#fff;color:var(--blue);border:1px solid #cfddf6}.b-disp.on{background:var(--blue);color:#fff}
+  /* poll cards */
+  .pcard{border:1px solid var(--line);border-radius:14px;padding:16px 18px;margin-bottom:14px}
+  .pcard:last-child{margin-bottom:0}
+  .pcard.shown{border-color:var(--blue);box-shadow:0 0 0 2px rgba(47,111,196,.12)}
+  .ph{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+  .ph .nm{font-family:'Space Grotesk';font-weight:600;font-size:16px}
+  .ph .ty{font-size:12px;color:var(--muted)}
+  .pill{font-size:12px;font-weight:600;padding:5px 11px;border-radius:999px;margin-left:auto}
+  .pill.open{background:#e3f4ec;color:#13633f}.pill.closed{background:#f0f1f5;color:#7a8194}
+  .prow{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+  .meta{display:flex;flex-wrap:wrap;gap:14px;align-items:center;margin-top:12px;font-size:13px;color:var(--muted)}
+  .meta a{color:var(--blue);text-decoration:none;font-weight:600}
+  .meta .copy{cursor:pointer;color:var(--muted);border:1px solid var(--line);border-radius:8px;padding:3px 8px;font-weight:600;font-size:12px}
+  .meta .qr{width:30px;height:30px;border-radius:6px;border:1px solid var(--line)}
+  .anote{font-size:12.5px;color:var(--muted);margin-top:8px;min-height:16px}
+  .resp{margin-top:12px;border:1px solid var(--line);border-radius:10px;max-height:220px;overflow:auto;display:none}
+  .resp.show{display:block}
+  .wrow{display:flex;justify-content:space-between;gap:10px;padding:8px 12px;font-size:13.5px}
+  .wrow:nth-child(odd){background:#f7f9fc}.wrow .c{font-family:'Space Grotesk';font-weight:700;color:var(--blue)}
+  .toggle{font-size:12.5px;color:var(--blue);cursor:pointer;margin-top:10px;font-weight:600}
   .links{display:flex;flex-wrap:wrap;gap:10px}
-  .links a{text-decoration:none;background:var(--blue-soft);color:var(--blue);font-weight:600;font-size:14px;
-    padding:11px 15px;border-radius:11px;display:inline-flex;align-items:center;gap:8px}
-  .mode{margin-top:6px;font-size:12.5px;color:var(--muted);display:flex;align-items:center;gap:7px}
-  .mode .md{width:8px;height:8px;border-radius:50%}
-  .mode.firebase .md{background:#1f7a5e}.mode.local .md{background:var(--amber)}
+  .links a{text-decoration:none;background:var(--blue-soft);color:var(--blue);font-weight:600;font-size:14px;padding:11px 15px;border-radius:11px}
   .note{background:#fff7ec;border:1px solid #f1d9b3;border-radius:12px;padding:11px 14px;font-size:12.5px;color:#7a5a1e;line-height:1.5}
+  /* gate */
+  .gate{position:fixed;inset:0;background:var(--navy);display:flex;align-items:center;justify-content:center;z-index:99}
+  .gate .box{background:#fff;border-radius:18px;padding:34px 36px;text-align:center;width:320px}
+  .gate h3{font-family:'Space Grotesk';margin:0 0 6px;color:var(--navy)}
+  .gate p{font-size:13px;color:var(--muted);margin:0 0 18px}
+  .gate input{width:100%;font-size:16px;padding:12px 14px;border:1px solid var(--line);border-radius:10px;outline:none;margin-bottom:12px;text-align:center}
+  .gate button{width:100%;justify-content:center;background:var(--navy)}
+  .gate .err{color:var(--red);font-size:12.5px;height:16px;margin-top:6px}
 </style>
 </head>
 <body>
-<header>
-  <h1>Innovation Hub — Admin</h1>
-  <p>Inno Talk #4 — Contrôles présentateur</p>
-</header>
-<div class="wrap">
+<div class="gate" id="gate"><div class="box">
+  <h3>Inno Talk #4 — Admin</h3><p>Entrez le mot de passe présentateur.</p>
+  <input id="pw" type="password" placeholder="Mot de passe" autofocus>
+  <button id="enter">Entrer</button><div class="err" id="err"></div>
+</div></div>
+
+<header><h1>Innovation Hub — Admin</h1><p>Inno Talk #4 — Contrôles présentateur</p></header>
+<div class="wrap" id="wrap" style="display:none">
 
   <div class="card">
-    <h2><span class="em">📊</span> Vue de session</h2>
+    <h2>📊 Vue de session</h2>
     <div class="ov">
       <div class="stat"><div class="v" id="ovPart">0</div><div class="l">Participants connectés</div></div>
-      <div class="stat"><div class="v" id="ovActive">0</div><div class="l">Réponses — sondage actif</div></div>
       <div class="stat"><div class="v" id="ovTotal">0</div><div class="l">Réponses au total</div></div>
+      <div class="stat"><div class="v" id="ovShown">—</div><div class="l">Affiché à l'écran</div></div>
     </div>
     <div class="mode" id="mode"><span class="md"></span><span id="modetxt"></span></div>
   </div>
 
   <div class="card">
-    <h2><span class="em">🎛️</span> Contrôles</h2>
-
-    <div class="grp">
-      <p class="desc"><b>Sondage actif</b> — s'affiche aussitôt sur les téléphones et l'écran. Cliquer ouvre le vote.</p>
-      <div class="row" id="pollRow"></div>
-      <div class="row" style="margin-top:9px">
-        <button class="b-gray" id="hideBtn">Masquer (aucun sondage)</button>
-      </div>
-    </div>
-
-    <div class="grp">
-      <p class="desc"><b>Vote en cours</b> — verrouille ou rouvre la saisie sans changer l'affichage. <span id="voteState" class="pill off">aucun</span></p>
-      <div class="row"><button class="b-teal" id="toggleBtn" disabled>Ouvrir le vote</button></div>
-    </div>
-
-    <div class="grp">
-      <p class="desc"><b>Sondage 3 — révélation</b> — met « Qualification &amp; standards » en avant (slide 23). Actif uniquement sur S3.</p>
-      <div class="row"><button class="b-amber" id="revealBtn" disabled>Révéler le vrai frein</button></div>
-    </div>
-
-    <div class="grp">
-      <p class="desc"><b>Réinitialiser</b> — supprime toutes les réponses et participants (protégé par mot de passe).</p>
-      <div class="row"><button class="b-red" id="resetBtn">🗑️ Réinitialiser les données</button></div>
-    </div>
+    <h2>🎛️ Sondages — ouverture, affichage & options</h2>
+    <div id="cards"></div>
+    <div class="prow" style="margin-top:14px"><button class="b-gray" id="hideBtn">🖥️ Masquer l'écran (page d'accueil)</button></div>
   </div>
 
   <div class="card">
-    <h2><span class="em">🗂️</span> Réponses — sondage actif</h2>
-    <div class="tools">
-      <input id="search" type="text" placeholder="Filtrer les réponses…">
-      <button class="b-out" id="refreshBtn">↻ Rafraîchir</button>
-    </div>
-    <div class="resp" id="resp"><div class="empty">Sélectionnez un sondage pour voir les réponses.</div></div>
-  </div>
-
-  <div class="card">
-    <h2><span class="em">🔗</span> Liens rapides</h2>
-    <div class="links">
-      <a href="index.html" target="_blank">📝 Page participant</a>
-      <a href="display.html" target="_blank">🖥️ Écran de résultats (projection)</a>
-      <a id="joinLink" target="_blank">🔗 Lien public (QR)</a>
-    </div>
+    <h2>🔗 Liens & réinitialisation</h2>
+    <div class="links"><a href="display.html" target="_blank">🖥️ Écran de résultats (projection)</a><a id="hubLink" target="_blank">📝 Hub participant (tous les sondages)</a></div>
+    <div class="prow" style="margin-top:14px"><button class="b-red" id="resetBtn">🗑️ Réinitialiser toutes les données</button></div>
     <div class="note" id="setupNote" style="display:none;margin-top:14px"></div>
   </div>
-
 </div>
 
 <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-app-compat.js"></script>
@@ -143,83 +101,117 @@
 <script>
 (function(){
   const $=id=>document.getElementById(id);
-
-  // mode + setup note
-  const modeEl=$('mode');
-  if(Store.mode==='firebase'){ modeEl.classList.add('firebase'); $('modetxt').textContent='Temps réel · multi-appareils'; }
-  else{ modeEl.classList.add('local'); $('modetxt').textContent='Mode démo local (même appareil)';
-    $('setupNote').style.display='block';
-    $('setupNote').innerHTML='<b>Mode démo local.</b> Renseignez la config Firebase dans <b>store.js</b> pour synchroniser tous les téléphones du public.'; }
-
-  // join link
-  const joinUrl=(CONFIG.joinUrl&&CONFIG.joinUrl.indexOf('VOTRE-')===-1)?CONFIG.joinUrl:location.href.replace(/admin\.html.*$/,'');
-  $('joinLink').href=joinUrl;
-
-  // poll buttons
-  const pollRow=$('pollRow');
-  POLL_ORDER.forEach(id=>{ const p=POLLS[id];
-    const b=document.createElement('button'); b.className='b-poll'; b.dataset.id=id;
-    b.innerHTML='<span class="n">S'+p.n+'</span> '+(p.type==='wordcloud'?'Word cloud':'QCM');
-    b.onclick=()=>Store.setControl({activePoll:id,status:{[id]:'open'},reveal:false});
-    pollRow.appendChild(b);
-  });
-  $('hideBtn').onclick=()=>Store.setControl({activePoll:'none',reveal:false});
-  $('toggleBtn').onclick=()=>{ const a=ctrl.activePoll; if(!a||a==='none')return;
-    const open=((ctrl.status&&ctrl.status[a])||'closed')==='open'; Store.setControl({status:{[a]:open?'closed':'open'}}); };
-  $('revealBtn').onclick=()=>{ if(ctrl.activePoll!=='s3')return; Store.setControl({reveal:!ctrl.reveal}); };
-  $('resetBtn').onclick=()=>{ const pw=prompt('Mot de passe administrateur :'); if(pw===null)return;
-    if(pw!==CONFIG.adminPassword){alert('Mot de passe incorrect.');return;}
-    if(confirm('Supprimer toutes les réponses et participants ?')){ Store.reset(); Store.setControl({activePoll:'none',status:{},reveal:false}); } };
-
-  // counts
-  Store.onParticipantCount(n=>$('ovPart').textContent=n);
-  const counts={}; let totalAll=0;
-  POLL_ORDER.forEach(id=>{ counts[id]=[]; Store.onResponses(id,rows=>{ counts[id]=rows;
-    totalAll=POLL_ORDER.reduce((s,k)=>s+(counts[k]?counts[k].length:0),0); $('ovTotal').textContent=totalAll;
-    if(ctrl.activePoll===id){ $('ovActive').textContent=rows.length; renderResp(); } }); });
-
-  // control state
-  let ctrl={activePoll:'none',status:{},reveal:false};
-  Store.onControl(c=>{ ctrl=Object.assign({activePoll:'none',status:{},reveal:false},c||{});
-    const a=ctrl.activePoll||'none';
-    pollRow.querySelectorAll('.b-poll').forEach(b=>b.classList.toggle('on',b.dataset.id===a));
-    $('ovActive').textContent = a==='none'?0:(counts[a]?counts[a].length:0);
-    // toggle vote
-    const tb=$('toggleBtn'), vs=$('voteState');
-    if(a==='none'){ tb.disabled=true; tb.textContent='Ouvrir le vote'; vs.textContent='aucun'; vs.className='pill off'; }
-    else{ tb.disabled=false; const open=((ctrl.status&&ctrl.status[a])||'closed')==='open';
-      tb.textContent=open?'Fermer le vote':'Rouvrir le vote';
-      vs.textContent=open?'ouvert':'fermé'; vs.className='pill '+(open?'live':'off'); }
-    // reveal
-    const rb=$('revealBtn'); rb.disabled = a!=='s3';
-    rb.textContent = (a==='s3'&&ctrl.reveal)?'Masquer la révélation':'Révéler le vrai frein';
-    renderResp();
-  });
-
-  // responses list (sondage actif)
-  $('refreshBtn').onclick=renderResp;
-  $('search').addEventListener('input',renderResp);
-  function renderResp(){
-    const a=ctrl.activePoll, box=$('resp'), q=($('search').value||'').toLowerCase().trim();
-    if(!a||a==='none'){ box.innerHTML='<div class="empty">Aucun sondage actif.</div>'; return; }
-    const poll=POLLS[a], rows=counts[a]||[];
-    if(!rows.length){ box.innerHTML='<div class="empty">Aucune réponse pour l\'instant.</div>'; return; }
-    let agg=[];
-    if(poll.type==='wordcloud'){
-      const m={},d={}; rows.forEach(r=>{ let raw=(r.text||'').trim().replace(/[.,!?;:·]+$/,''); if(!raw)return;
-        const k=raw.toLowerCase(); m[k]=(m[k]||0)+1; if(!d[k])d[k]=raw; });
-      agg=Object.keys(m).map(k=>({lab:d[k],c:m[k]})).sort((x,y)=>y.c-x.c);
-    } else {
-      const m={}; poll.options.forEach(o=>m[o.id]=0); rows.forEach(r=>{ if(m[r.choice]!=null)m[r.choice]++; });
-      agg=poll.options.map(o=>({lab:o.label,c:m[o.id]})).sort((x,y)=>y.c-x.c);
-    }
-    const max=Math.max(1,...agg.map(a=>a.c));
-    const filtered=agg.filter(a=>!q||a.lab.toLowerCase().includes(q));
-    if(!filtered.length){ box.innerHTML='<div class="empty">Aucun résultat.</div>'; return; }
-    box.innerHTML=filtered.map(a=>'<div class="wrow"><div style="flex:1"><div class="t">'+esc(a.lab)+'</div>'
-      +'<div class="wbar" style="width:'+(a.c/max*100)+'%"></div></div><div class="c">'+a.c+'</div></div>').join('');
-  }
   function esc(s){return String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));}
+
+  // ---- gate ----
+  function unlock(){ $('gate').style.display='none'; $('wrap').style.display='flex'; init(); }
+  try{ if(sessionStorage.getItem('it4-admin')==='1') { unlock(); return; } }catch(e){}
+  $('enter').onclick=()=>{ if($('pw').value===CONFIG.adminPassword){ try{sessionStorage.setItem('it4-admin','1');}catch(e){} unlock(); } else { $('err').textContent='Mot de passe incorrect.'; } };
+  $('pw').addEventListener('keydown',e=>{ if(e.key==='Enter') $('enter').click(); });
+
+  function init(){
+    const base=(CONFIG.joinUrl&&CONFIG.joinUrl.indexOf('IMPULSE-ORG')===-1&&CONFIG.joinUrl.indexOf('VOTRE')===-1)?CONFIG.joinUrl:location.href.replace(/admin\.html.*$/,'');
+    const link=p=>base+'?poll='+p;
+    const qr=(s,p)=>'https://api.qrserver.com/v1/create-qr-code/?margin=0&size='+s+'x'+s+'&data='+encodeURIComponent(link(p));
+    $('hubLink').href=base;
+    const me=$('mode'); if(Store.mode==='firebase'){me.classList.add('firebase');$('modetxt').textContent='Temps réel · multi-appareils';}
+      else{me.classList.add('local');$('modetxt').textContent='Mode démo local (même appareil)';$('setupNote').style.display='block';$('setupNote').innerHTML='<b>Mode démo local.</b> Renseignez Firebase dans store.js pour le multi-appareils. Le regroupement S2 utilise un repli local sans IA tant que le Worker n\'est pas configuré.';}
+
+    const typeLabel={wordcloud:'Word cloud',open:'Réponse ouverte (regroupée)',multi:'Choix multiples + autre'};
+    const cardsEl=$('cards');
+    POLL_ORDER.forEach(id=>{ const p=POLLS[id];
+      const c=document.createElement('div'); c.className='pcard'; c.id='pc-'+id;
+      let extra='';
+      if(p.type==='open') extra='<button class="b-blue" data-act="analyse" data-id="'+id+'">✨ Analyser / regrouper</button>';
+      if(p.type==='multi'&&p.reveal) extra='<button class="b-amber" data-act="reveal" data-id="'+id+'">Révéler le vrai frein</button>';
+      c.innerHTML=
+        '<div class="ph"><span class="nm">Sondage '+p.n+'</span><span class="ty">· '+typeLabel[p.type]+'</span><span class="pill closed" id="pill-'+id+'">fermé</span></div>'
+        +'<div class="prow">'
+          +'<button class="b-teal" data-act="toggle" data-id="'+id+'" id="tg-'+id+'">Ouvrir le vote</button>'
+          +'<button class="b-disp" data-act="display" data-id="'+id+'" id="dp-'+id+'">Afficher à l\'écran</button>'
+          +extra
+        +'</div>'
+        +'<div class="anote" id="an-'+id+'"></div>'
+        +'<div class="meta"><span id="cnt-'+id+'">0 réponse</span>'
+          +'<a href="'+link(id)+'" target="_blank">'+esc(link(id).replace(/^https?:\/\//,''))+'</a>'
+          +'<span class="copy" data-copy="'+esc(link(id))+'">copier</span>'
+          +'<img class="qr" src="'+qr(60,id)+'" alt="QR">'
+          +'<span class="toggle" data-act="resp" data-id="'+id+'">réponses ▾</span>'
+        +'</div><div class="resp" id="rs-'+id+'"></div>';
+      cardsEl.appendChild(c);
+    });
+
+    // actions
+    cardsEl.addEventListener('click',e=>{
+      const cp=e.target.closest('[data-copy]'); if(cp){ navigator.clipboard&&navigator.clipboard.writeText(cp.dataset.copy); cp.textContent='copié ✓'; setTimeout(()=>cp.textContent='copier',1200); return; }
+      const b=e.target.closest('[data-act]'); if(!b)return; const id=b.dataset.id, act=b.dataset.act;
+      if(act==='toggle'){ const open=((ctrl.status||{})[id]||'closed')==='open'; Store.setControl({status:{[id]:open?'closed':'open'}}); }
+      else if(act==='display'){ Store.setControl({display:id, reveal:false}); }
+      else if(act==='reveal'){ Store.setControl({reveal:!ctrl.reveal}); }
+      else if(act==='analyse'){ analyse(id,b); }
+      else if(act==='resp'){ const r=$('rs-'+id); r.classList.toggle('show'); b.textContent = r.classList.contains('show')?'réponses ▴':'réponses ▾'; }
+    });
+
+    $('hideBtn').onclick=()=>Store.setControl({display:'none'});
+    $('resetBtn').onclick=()=>{ const pw=prompt('Mot de passe pour tout réinitialiser :'); if(pw===null)return;
+      if(pw!==CONFIG.adminPassword){alert('Incorrect.');return;} if(confirm('Supprimer toutes les réponses et participants ?')){ Store.reset(); Store.setControl({display:'none',status:{},reveal:false}); } };
+
+    // data
+    Store.onParticipantCount(n=>$('ovPart').textContent=n);
+    const counts={}; POLL_ORDER.forEach(id=>{ counts[id]=[]; Store.onResponses(id,rows=>{ counts[id]=rows;
+      $('ovTotal').textContent=POLL_ORDER.reduce((s,k)=>s+(counts[k]?counts[k].length:0),0);
+      $('cnt-'+id).textContent=rows.length+' réponse'+(rows.length===1?'':'s'); renderResp(id); }); });
+
+    let ctrl={display:'none',status:{},reveal:false};
+    Store.onControl(c=>{ ctrl=Object.assign({display:'none',status:{},reveal:false},c||{});
+      POLL_ORDER.forEach(id=>{ const open=((ctrl.status||{})[id]||'closed')==='open';
+        $('pill-'+id).textContent=open?'ouvert':'fermé'; $('pill-'+id).className='pill '+(open?'open':'closed');
+        $('tg-'+id).textContent=open?'Fermer le vote':'Ouvrir le vote'; $('tg-'+id).className='b-teal';
+        if(!open) $('tg-'+id).classList.add('b-gray'),$('tg-'+id).classList.remove('b-teal');
+        const dp=$('dp-'+id), shown=ctrl.display===id; dp.classList.toggle('on',shown);
+        $('pc-'+id).classList.toggle('shown',shown);
+        const rv=$('pc-'+id).querySelector('[data-act="reveal"]'); if(rv) rv.textContent=ctrl.reveal&&ctrl.display===id?'Masquer la révélation':'Révéler le vrai frein';
+      });
+      $('ovShown').textContent = ctrl.display==='none'?'—':('S'+POLLS[ctrl.display].n); });
+
+    Store.onAnalysis('s2',a=>{ if(a&&a.clusters) $('an-s2').textContent='Regroupé ✓ — '+a.clusters.length+' thèmes ('+new Date(a.ts).toLocaleTimeString()+')'; });
+
+    function renderResp(id){ const box=$('rs-'+id); if(!box.classList.contains('show'))return;
+      const poll=POLLS[id], rows=counts[id]||[]; let html='';
+      if(!rows.length){ box.innerHTML='<div class="wrow" style="color:#9aa3b8">Aucune réponse.</div>'; return; }
+      if(poll.type==='wordcloud'){ const m={}; rows.forEach(r=>{const k=(r.text||'').trim().toLowerCase();if(k)m[k]=(m[k]||0)+1;});
+        html=Object.entries(m).sort((a,b)=>b[1]-a[1]).map(([w,c])=>'<div class="wrow"><span>'+esc(w)+'</span><span class="c">'+c+'</span></div>').join(''); }
+      else if(poll.type==='open'){ html=rows.slice().reverse().map(r=>'<div class="wrow"><span>'+esc((r.text||'').slice(0,160))+'</span></div>').join(''); }
+      else { const cn={}; poll.options.forEach(o=>cn[o.id]=0); const others=[]; rows.forEach(r=>{(r.choices||[]).forEach(c=>{if(cn[c]!=null)cn[c]++;}); if((r.other||'').trim())others.push(r.other.trim());});
+        html=poll.options.map(o=>'<div class="wrow"><span>'+esc(o.label)+'</span><span class="c">'+cn[o.id]+'</span></div>').join('')
+          +others.map(o=>'<div class="wrow"><span>+ '+esc(o)+'</span></div>').join(''); }
+      box.innerHTML=html;
+    }
+
+    // ---- S2 clustering ----
+    async function analyse(id,btn){ const rows=counts[id]||[]; const answers=rows.map(r=>(r.text||'').trim()).filter(Boolean);
+      if(!answers.length){ $('an-'+id).textContent='Aucune réponse à regrouper.'; return; }
+      btn.disabled=true; $('an-'+id).textContent='Analyse en cours…';
+      let clusters=null;
+      if(CONFIG.clusterEndpoint){ try{
+        const res=await fetch(CONFIG.clusterEndpoint,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({question:POLLS[id].question,answers})});
+        const data=await res.json(); clusters=data.clusters;
+      }catch(err){ console.error(err); $('an-'+id).textContent='Worker injoignable — repli local sans IA.'; } }
+      if(!clusters||!clusters.length) clusters=localCluster(answers);
+      Store.setAnalysis(id,{clusters}); btn.disabled=false;
+      $('an-'+id).textContent='Regroupé ✓ — '+clusters.length+' thèmes.';
+    }
+    const STOP=new Set('the a an and or of to in on for with by is are be we our you your i it that this they them their as at from new can could should would more most also not into over under per via using use used name names player players product products project projects opportunity opportunities business businesses technology technologies solution solutions develop existing ongoing on-going'.split(' '));
+    function localCluster(answers){
+      const freq={}; answers.forEach(a=>{ new Set(a.toLowerCase().replace(/[^a-zà-ÿ0-9 ]/g,' ').split(/\s+/).filter(w=>w.length>3&&!STOP.has(w))).forEach(w=>freq[w]=(freq[w]||0)+1); });
+      const seeds=Object.entries(freq).filter(([,c])=>c>=2).sort((a,b)=>b[1]-a[1]).slice(0,7).map(x=>x[0]);
+      const buckets={}; const other=[];
+      answers.forEach(a=>{ const low=a.toLowerCase(); const s=seeds.find(w=>low.includes(w)); if(s){(buckets[s]=buckets[s]||[]).push(a);} else other.push(a); });
+      const clusters=Object.entries(buckets).map(([w,arr])=>({label:w.charAt(0).toUpperCase()+w.slice(1),count:arr.length,examples:arr.slice(0,2)}));
+      if(other.length) clusters.push({label:'Other',count:other.length,examples:other.slice(0,2)});
+      return clusters.sort((a,b)=>b.count-a.count);
+    }
+  }
 })();
 </script>
 </body>
