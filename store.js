@@ -38,21 +38,20 @@ const CONFIG = {
 const POLLS = {
   s1: {
     n: 1, type: "wordcloud",
-    question: "In one word: what is the biggest innovation challenge your clients are talking about right now?",
-    sub: "Type 1 to 3 words — you can add several.",
-    placeholder: "e.g. cost, integrity, CO₂…"
+    question: "In your opinion, who is financing the development of Geothermal Energy right now?",
+    sub: "Type a name or sector — you can add several.",
+    placeholder: "e.g. Google, Microsoft, data centers…"
   },
   s2: {
     n: 2, type: "open",
-    question: "How could Vallourec connect to technologies / business opportunities in Oil & Gas and conventional businesses?",
-    sub: "Existing products, on-going projects, expertise to value, new products / solutions to develop, partnerships to explore… Answer in detail — name the player, the product.",
-    placeholder: "Be specific: client / project, product or solution, what to do…"
+    question: "In your opinion, what are the new opportunities for Vallourec in Oil & Gas and conventional businesses?",
+    sub: "Think: existing products to reposition, new markets to enter, clients to approach, partnerships to explore. Be specific — name the client, the project, the product.",
+    placeholder: "e.g. Geothermal casing for data center cooling loops, CCUS partnerships with TotalEnergies, premium connections for unconventional gas in the US…"
   },
   s3: {
     n: 3, type: "multi", allowOther: true,
     question: "Which of these are real barriers for Vallourec to win in CCUS, hydrogen & geothermal?",
     sub: "Select all that apply — add your own with “Other”.",
-    reveal: { id: "qual", note: "The real barrier: qualification & standards — not invention." },
     options: [
       { id: "tech", label: "New technology",            full: "Inventing new technology" },
       { id: "qual", label: "Qualification & standards", full: "Qualification & standards" },
