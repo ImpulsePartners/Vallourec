@@ -127,23 +127,27 @@ const Store = (function () {
                 fb.databaseURL && fb.databaseURL !== "PASTE_HERE";
   const dctrl = () => ({ display: "none", status: {}, reveal: false });
 
+  const errSubs = [];
+  function fail(e){ console.error("Firebase write refused:", e); errSubs.forEach(cb => cb(e)); }
+
   if (ready) {
     try {
       firebase.initializeApp(fb);
       const base = firebase.database().ref(ROOT);
       return {
         mode: "firebase",
+        onError(cb){ errSubs.push(cb); },
         onControl(cb){ base.child("control").on("value", s => cb(Object.assign(dctrl(), s.val()||{}))); },
         setControl(o){ const upd={};
           if("display" in o) upd["display"]=o.display;
           if("reveal" in o) upd["reveal"]=o.reveal;
           if(o.status) Object.keys(o.status).forEach(k=>{ upd["status/"+k]=o.status[k]; });
-          base.child("control").update(upd); },
+          base.child("control").update(upd).catch(fail); },
         onResponses(id, cb){ base.child("responses/"+id).on("value", s => cb(Object.values(s.val()||{}))); },
-        addResponse(id, d){ base.child("responses/"+id).push(Object.assign({ ts: Date.now() }, d)); },
+        addResponse(id, d){ base.child("responses/"+id).push(Object.assign({ ts: Date.now() }, d)).catch(fail); },
         onAnalysis(id, cb){ base.child("analysis/"+id).on("value", s => cb(s.val()||null)); },
-        setAnalysis(id, d){ base.child("analysis/"+id).set(Object.assign({ ts: Date.now() }, d)); },
-        registerParticipant(pid){ base.child("participants/"+pid).set(Date.now()); },
+        setAnalysis(id, d){ base.child("analysis/"+id).set(Object.assign({ ts: Date.now() }, d)).catch(fail); },
+        registerParticipant(pid){ base.child("participants/"+pid).set(Date.now()).catch(fail); },
         onParticipantCount(cb){ base.child("participants").on("value", s => cb(s.numChildren())); },
         reset(){ return base.remove(); }
       };
@@ -169,6 +173,7 @@ const Store = (function () {
 
   return {
     mode: "local",
+    onError(cb){ errSubs.push(cb); },
     onControl(cb){ cSubs.push(cb); cb(read().control); },
     setControl(o){ const s=read(); if(o.status) o.status=Object.assign({}, s.control.status||{}, o.status);
       s.control=Object.assign(s.control, o); write(s); notify(); },

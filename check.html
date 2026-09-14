@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Inno Talk #6 — Diagnostic</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet">
+<style>
+  :root{--navy:#15457f;--ink:#16335f;--muted:#5b6478;--line:#e3e8f1;--bg:#eef1f6;--ok:#1f7a5e;--bad:#9a3a22;--warn:#9a6712}
+  *{box-sizing:border-box}html,body{margin:0}
+  body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--ink)}
+  header{background:var(--navy);color:#fff;padding:18px 30px}
+  header h1{font-family:'Space Grotesk';font-weight:700;font-size:20px;margin:0}
+  header p{margin:4px 0 0;font-size:13px;color:#bcd0ec}
+  .wrap{max-width:760px;margin:0 auto;padding:24px 18px 60px;display:flex;flex-direction:column;gap:16px}
+  .card{background:#fff;border-radius:16px;box-shadow:0 8px 26px rgba(21,69,127,.07);padding:20px 22px}
+  .card h2{font-family:'Space Grotesk';font-weight:600;font-size:15px;margin:0 0 14px;color:var(--navy)}
+  .row{display:flex;gap:12px;padding:11px 0;border-bottom:1px solid var(--line);align-items:flex-start;font-size:14px}
+  .row:last-child{border-bottom:none}
+  .mk{flex:none;width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:#fff;background:#c6cee0}
+  .mk.ok{background:var(--ok)}.mk.bad{background:var(--bad)}.mk.warn{background:var(--warn)}
+  .row .t{flex:1;line-height:1.5}
+  .row .t b{display:block;font-weight:600;margin-bottom:2px}
+  .row .t span{color:var(--muted);font-size:13px;word-break:break-word}
+  pre{background:#0f1c33;color:#e6ecf7;border-radius:12px;padding:16px 18px;font-size:13px;line-height:1.5;overflow:auto;margin:12px 0 0}
+  .fix{display:none}.fix.show{display:block}
+  .fix ol{margin:0;padding-left:20px;font-size:14px;line-height:1.75}
+  .fix li{margin-bottom:4px}
+  .copy{font-family:'Inter';font-weight:600;font-size:13px;border:none;border-radius:10px;padding:10px 14px;cursor:pointer;color:#fff;background:var(--navy);margin-top:12px}
+  a{color:#2f6fc4}
+</style>
+</head>
+<body>
+<header><h1>Inno Talk #6 — Diagnostic</h1><p>Vérifie la configuration avant la session. Aucune donnée n'est modifiée.</p></header>
+<div class="wrap">
+  <div class="card"><h2>Contrôles</h2><div id="rows"></div></div>
+  <div class="card fix" id="fix">
+    <h2>Comment corriger</h2>
+    <ol>
+      <li>Ouvrez <a href="https://console.firebase.google.com" target="_blank">console.firebase.google.com</a> et sélectionnez le projet.</li>
+      <li>Menu de gauche : Realtime Database, puis onglet <b>Rules</b> (Règles).</li>
+      <li>Remplacez tout le contenu par le bloc ci-dessous.</li>
+      <li>Cliquez sur <b>Publish</b> (Publier). L'effet est immédiat.</li>
+      <li>Rechargez cette page : les trois derniers contrôles doivent passer au vert.</li>
+    </ol>
+    <pre id="rules"></pre>
+    <button class="copy" id="copyBtn">Copier les règles</button>
+  </div>
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-database-compat.js"></script>
+<script src="store.js"></script>
+<script>
+(function(){
+  const rowsEl=document.getElementById('rows');
+  function esc(s){return String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));}
+  function row(state,title,detail){
+    const mk={ok:'✓',bad:'✕',warn:'!',wait:'…'}[state]||'…';
+    const d=document.createElement('div'); d.className='row';
+    d.innerHTML='<span class="mk '+(state==='wait'?'':state)+'">'+mk+'</span><div class="t"><b>'+esc(title)+'</b><span>'+detail+'</span></div>';
+    rowsEl.appendChild(d); return d;
+  }
+  function update(el,state,detail){
+    const mk=el.querySelector('.mk'); mk.className='mk '+(state==='wait'?'':state);
+    mk.textContent={ok:'✓',bad:'✕',warn:'!',wait:'…'}[state];
+    el.querySelector('.t span').innerHTML=detail;
+  }
+  function showFix(){
+    const r='{\n  "rules": {\n    "'+(CONFIG.session||'innotalk6')+'": {\n      ".read": true,\n      ".write": true\n    }\n  }\n}';
+    document.getElementById('rules').textContent=r;
+    document.getElementById('fix').classList.add('show');
+    document.getElementById('copyBtn').onclick=function(){
+      navigator.clipboard&&navigator.clipboard.writeText(r);
+      this.textContent='Copié ✓'; setTimeout(()=>this.textContent='Copier les règles',1400);
+    };
+  }
+
+  // 1. store.js
+  row('ok','store.js chargé','Session : <b>'+esc(CONFIG.session)+'</b> · '+POLL_ORDER.length+' sondages · projet '+esc(CONFIG.firebase.projectId));
+
+  // 2. URL publique
+  const here=location.href.replace(/check\.html.*$/,'');
+  const same=CONFIG.joinUrl && here.indexOf(CONFIG.joinUrl.replace(/\/$/,''))===0;
+  row(same?'ok':'warn','Adresse des QR codes',
+    same ? esc(CONFIG.joinUrl)+' correspond à cette page.'
+         : 'joinUrl = <b>'+esc(CONFIG.joinUrl||'(vide)')+'</b><br>Cette page est servie depuis <b>'+esc(here)+'</b>.<br>Les QR codes pointeront vers joinUrl : corrigez la ligne joinUrl dans store.js si ce n\'est pas la bonne adresse.');
+
+  // 3. SDK Firebase
+  const sdk = typeof firebase!=='undefined';
+  row(sdk?'ok':'bad','SDK Firebase', sdk?'Chargé depuis gstatic.com.':'Non chargé. Réseau bloqué ou hors ligne : le temps réel ne fonctionnera pas.');
+
+  // 4. mode
+  const fbMode = Store.mode==='firebase';
+  row(fbMode?'ok':'bad','Mode de données',
+    fbMode?'Temps réel multi-appareils.':'Mode démo local : les téléphones du public ne verront rien. Vérifiez le bloc firebase dans store.js.');
+
+  if(!fbMode){ showFix(); return; }
+
+  // 5/6. lecture + écriture réelles sur un nœud temporaire
+  const rRead=row('wait','Lecture de la base','Test en cours…');
+  const rWrite=row('wait','Écriture dans la base','Test en cours…');
+  const ref=firebase.database().ref((CONFIG.session||'innotalk6')+'/_check');
+
+  ref.once('value')
+    .then(()=>update(rRead,'ok','Lecture autorisée.'))
+    .catch(e=>{ update(rRead,'bad','Refusée : '+esc(e.message||e)); showFix(); });
+
+  ref.set(Date.now())
+    .then(()=>{
+      update(rWrite,'ok','Écriture autorisée. La configuration est prête pour la session.');
+      ref.remove();
+    })
+    .catch(e=>{
+      const m=String(e.message||e);
+      update(rWrite,'bad','Refusée : '+esc(m)+'<br>C\'est la cause du bouton qui revient sur « fermé » : la régie écrit l\'ouverture du vote, la base la rejette, et l\'écran repasse à l\'état précédent.');
+      showFix();
+    });
+})();
+</script>
+</body>
+</html>
