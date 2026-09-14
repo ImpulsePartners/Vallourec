@@ -20,16 +20,16 @@ const CONFIG = {
   //    Laisser vide ("") pour un regroupement local par mots-clés (sans IA, pour tester).
   clusterEndpoint: "https://vallourec.jeetoki.workers.dev/",
 
-  // 4) Espace de noms. innotalk6 ≠ innotalk4 : les données d'IT#4 restent intactes.
+  // 4) Espace de noms : racine des données dans la base (projet innotalk6-48aab).
   session: "innotalk6",
 
   // 5) Config Firebase Realtime Database (laisser "PASTE_HERE" pour le mode démo local).
   firebase: {
-    apiKey:      "AIzaSyAnmf9XM2R0-Vc9M4-61VEUeAA7WRsffdo",
-    authDomain:  "innotalk4.firebaseapp.com",
-    databaseURL: "https://innotalk4-default-rtdb.europe-west1.firebasedatabase.app",
-    projectId:   "innotalk4",
-    appId:       "1:683039855535:web:2c4fe1f922543984c3955a"
+    apiKey:      "AIzaSyAwQ_jMGFmlYJVaMH-bPabwyh-wwjjL2zw",
+    authDomain:  "innotalk6-48aab.firebaseapp.com",
+    databaseURL: "https://innotalk6-48aab-default-rtdb.europe-west1.firebasedatabase.app",
+    projectId:   "innotalk6-48aab",
+    appId:       "1:1093807748336:web:02c650a0ae724ddf85fe35"
   }
 };
 
